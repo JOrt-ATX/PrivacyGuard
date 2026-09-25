@@ -1,0 +1,41 @@
+{
+  "policy_id": "cv_scoring",
+  "version": "1.0",
+  "description": "Minimización conservadora para evaluación profesional de CVs.",
+  "default_action": "REVIEW",
+  "review": {
+    "provisional_action": "REDACT",
+    "never_keep_automatically": true
+  },
+  "rules": {
+    "EMAIL": "REDACT",
+    "PHONE": "REDACT",
+    "DNI_NIE": "REDACT",
+    "NIF_JURIDICA": "REDACT",
+    "PASSPORT": "REDACT",
+    "IBAN": "REDACT",
+    "URL": "REDACT",
+    "SOCIAL_PROFILE": "REDACT",
+    "NSS": "REDACT",
+    "POSTAL_CODE": "REDACT",
+    "DATE_FULL": "REDACT",
+    "PERSON_NAME": "REDACT",
+    "GENDER_MARKER": "REDACT",
+    "ART9_HEALTH": "REDACT",
+    "ART9_BIOMETRIC": "REDACT",
+    "ART9_RELIGION": "REDACT",
+    "ART9_POLITICS": "REDACT",
+    "ART9_UNION": "REDACT",
+    "ART9_ORIENTATION": "REDACT",
+    "THIRD_PARTY": "REDACT",
+    "ORGANIZATION": "KEEP",
+    "LOCATION_CITY": "GENERALIZE",
+    "LOCATION_REGION": "KEEP",
+    "EDUCATION": "KEEP",
+    "DATE_RANGE": "KEEP"
+  },
+  "notes": [
+    "La acción KEEP para ORGANIZATION, EDUCATION y DATE_RANGE queda como supuesto D-5 pendiente de revisión del DPO.",
+    "La acción GENERALIZE para LOCATION_CITY requiere que exista una entrada en la tabla de generalización."
+  ]
+}

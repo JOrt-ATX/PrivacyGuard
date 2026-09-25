@@ -1,0 +1,17 @@
+host = "127.0.0.1"
+port = 8090
+tls_cert = ""
+tls_key = ""
+llm_base_url = "https://172.21.28.81/v1"
+llm_model = "qwen3.6-27b"
+llm_ca_file = ""
+llm_timeout_s = 30.0
+llm_seed = 20260925
+max_concurrency = 4
+max_text_bytes = 204800
+diagnostic_mode = false
+
+[consumer_tokens]
+# SHA-256 de cada token, nunca el token literal.
+# "aicrew" = "hash-hexadecimal-de-64-caracteres"
+aicrew = ""

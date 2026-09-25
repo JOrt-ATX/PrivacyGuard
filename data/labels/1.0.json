@@ -1,0 +1,31 @@
+{
+  "catalog": "labels",
+  "version": "1.0",
+  "labels": {
+    "EMAIL": {"risk": "HIGH", "category_rgpd": "dato_contacto", "source": "RULE"},
+    "PHONE": {"risk": "HIGH", "category_rgpd": "dato_contacto", "source": "RULE"},
+    "DNI_NIE": {"risk": "CRITICAL", "category_rgpd": "identificador_oficial", "source": "RULE"},
+    "NIF_JURIDICA": {"risk": "HIGH", "category_rgpd": "identificador_oficial", "source": "RULE"},
+    "PASSPORT": {"risk": "CRITICAL", "category_rgpd": "identificador_oficial", "source": "RULE"},
+    "IBAN": {"risk": "CRITICAL", "category_rgpd": "dato_financiero", "source": "RULE"},
+    "URL": {"risk": "MEDIUM", "category_rgpd": "identificador_web", "source": "RULE"},
+    "SOCIAL_PROFILE": {"risk": "HIGH", "category_rgpd": "identificador_web", "source": "RULE"},
+    "NSS": {"risk": "CRITICAL", "category_rgpd": "identificador_oficial", "source": "RULE"},
+    "POSTAL_CODE": {"risk": "MEDIUM", "category_rgpd": "dato_localizacion", "source": "RULE"},
+    "DATE_FULL": {"risk": "HIGH", "category_rgpd": "dato_fecha", "source": "RULE"},
+    "PERSON_NAME": {"risk": "HIGH", "category_rgpd": "nombre_propio", "source": "MODEL"},
+    "GENDER_MARKER": {"risk": "HIGH", "category_rgpd": "marcador_genero", "source": "MODEL"},
+    "ART9_HEALTH": {"risk": "CRITICAL", "category_rgpd": "dato_articulo9_rgpd", "source": "MODEL"},
+    "ART9_BIOMETRIC": {"risk": "CRITICAL", "category_rgpd": "dato_articulo9_rgpd", "source": "MODEL"},
+    "ART9_RELIGION": {"risk": "CRITICAL", "category_rgpd": "dato_articulo9_rgpd", "source": "MODEL"},
+    "ART9_POLITICS": {"risk": "CRITICAL", "category_rgpd": "dato_articulo9_rgpd", "source": "MODEL"},
+    "ART9_UNION": {"risk": "CRITICAL", "category_rgpd": "dato_articulo9_rgpd", "source": "MODEL"},
+    "ART9_ORIENTATION": {"risk": "CRITICAL", "category_rgpd": "dato_articulo9_rgpd", "source": "MODEL"},
+    "THIRD_PARTY": {"risk": "HIGH", "category_rgpd": "referencia_tercero", "source": "MODEL"},
+    "ORGANIZATION": {"risk": "LOW", "category_rgpd": "contenido_profesional", "source": "MODEL"},
+    "LOCATION_CITY": {"risk": "MEDIUM", "category_rgpd": "dato_localizacion", "source": "MODEL"},
+    "LOCATION_REGION": {"risk": "LOW", "category_rgpd": "dato_localizacion", "source": "MODEL"},
+    "EDUCATION": {"risk": "LOW", "category_rgpd": "contenido_profesional", "source": "MODEL"},
+    "DATE_RANGE": {"risk": "LOW", "category_rgpd": "dato_fecha", "source": "MODEL"}
+  }
+}

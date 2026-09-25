@@ -1,0 +1,37 @@
+{
+  "catalog": "placeholders",
+  "version": "1.0",
+  "format": "[PREFIX_n]",
+  "prefixes": {
+    "EMAIL": "EMAIL",
+    "PHONE": "TELEFONO",
+    "DNI_NIE": "DNI_NIE",
+    "NIF_JURIDICA": "NIF_JURIDICA",
+    "PASSPORT": "PASAPORTE",
+    "IBAN": "IBAN",
+    "URL": "URL",
+    "SOCIAL_PROFILE": "PERFIL_SOCIAL",
+    "NSS": "NSS",
+    "POSTAL_CODE": "CODIGO_POSTAL",
+    "DATE_FULL": "FECHA_ABSOLUTA",
+    "PERSON_NAME": "PERSONA",
+    "GENDER_MARKER": "MARCADOR_GENERO",
+    "ART9_HEALTH": "DATO_SENSIBLE",
+    "ART9_BIOMETRIC": "DATO_SENSIBLE",
+    "ART9_RELIGION": "DATO_SENSIBLE",
+    "ART9_POLITICS": "DATO_SENSIBLE",
+    "ART9_UNION": "DATO_SENSIBLE",
+    "ART9_ORIENTATION": "DATO_SENSIBLE",
+    "THIRD_PARTY": "TERCERO",
+    "ORGANIZATION": "ORGANIZACION",
+    "LOCATION_CITY": "LOCALIDAD",
+    "LOCATION_REGION": "REGION",
+    "EDUCATION": "FORMACION",
+    "DATE_RANGE": "RANGO_FECHAS"
+  },
+  "indexing": {
+    "scope": "document",
+    "same_normalized_entity_same_index": true,
+    "placeholder_has_length_information": false
+  }
+}

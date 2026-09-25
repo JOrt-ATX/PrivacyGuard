@@ -1,0 +1,16 @@
+{
+  "table": "municipio_provincia",
+  "version": "1.0",
+  "source": {
+    "name": "Instituto Nacional de Estadística",
+    "dataset": "Relación de municipios y provincias",
+    "license": "Pendiente de confirmar con INE antes de producción",
+    "retrieved_at": null
+  },
+  "format": {
+    "key": "municipio normalizado en minúsculas y NFC",
+    "value": "provincia en forma canónica",
+    "entries": {}
+  },
+  "status": "SCHEMA_ONLY_PENDING_SOURCE_CONFIRMATION"
+}

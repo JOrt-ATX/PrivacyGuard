@@ -1,0 +1,17 @@
+__pycache__/
+*.pyc
+.venv/
+
+# Configuración local y secretos: nunca en el repositorio
+config/privacyguard.toml
+config/*.local.toml
+*.key
+*.pem
+.env
+
+# Logs de contadores del Servicio
+logs/
+
+# Corpus y resultados de medición (pueden contener datos personales)
+benchmarks/data/
+benchmarks/results/
