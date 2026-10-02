@@ -6,8 +6,21 @@ revisión de JJO.** Requisitos: `docs/ATX_PrivacyGuard_Requisitos_v1.0.md`
 (§18 define las fases originales; este plan las adapta al uso de un LLM
 interno en lugar de un modelo NER embebido).
 
-**Alcance autorizado ahora: P0 + P1.** P2 en adelante quedan descritas para
-dar contexto, pero no se inician sin nueva autorización.
+**Alcance autorizado ahora: P0 + P1 + P2** (P2 autorizada por JJO el
+02/10/2026; la puerta de P0 se da por aprobada con esa autorización). P3 en
+adelante quedan descritas para dar contexto, pero no se inician sin nueva
+autorización.
+
+**Estado de P2 (02/10/2026):** el trabajo vive en `C:\AI\AICrew` (repositorio
+aparte, sin commitear). Una sesión anterior dejó hecho el backend: cliente
+`app/privacy/client.py`, migración `0006_privacyguard.sql`, pipeline en modo
+`serie`, `minimization_cache`, `privacy_calls`, tests verdes y verificado contra
+este Servicio (ver `C:\AI\AICrew\docs\P2_supuestos_pendientes_revision.md`).
+Hecho el 02/10/2026: campos alineados con la v1.1 (`privacy_llm_model`,
+`privacy_prompt_version`, `privacy_llm_endpoint_id`, más
+`privacy_preprocessing_version` en `evaluations`; 526 tests verdes en AICrew).
+Pendiente: CA-9 (control de deriva por proceso), estados por CV en la UI (§7.4),
+validación manual (§12) y commit en AICrew (sigue sin commitear).
 
 ---
 
