@@ -26,6 +26,9 @@ class Settings:
     diagnostic_mode: bool
     consumer_tokens: dict[str, str]
     llm_api_key: str | None
+    # TEMPORAL (ver PLAN.md, "Excepción temporal TLS"): False solo mientras
+    # falte la CA interna. Por defecto la verificación está activa.
+    llm_tls_verify: bool = True
 
     @property
     def llm_endpoint_id(self) -> str:
@@ -67,6 +70,7 @@ def load_settings(path: str | Path, *, environ: dict[str, str] | None = None) ->
         llm_base_url=_string(raw, "llm_base_url"),
         llm_model=_string(raw, "llm_model"),
         llm_ca_file=_optional_string(raw.get("llm_ca_file"), "llm_ca_file"),
+        llm_tls_verify=_boolean(raw, "llm_tls_verify") if "llm_tls_verify" in raw else True,
         llm_timeout_s=_number(raw, "llm_timeout_s", 0.1),
         llm_seed=_integer(raw, "llm_seed", 0),
         max_concurrency=_integer(raw, "max_concurrency", 1),

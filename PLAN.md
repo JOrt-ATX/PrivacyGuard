@@ -53,7 +53,7 @@ D-5 a D-13 siguen abiertas (DPO / Jurídica / JJO) y **no bloquean P0 ni P1**.
 | Parámetro | Valor |
 |---|---|
 | URL base | `https://172.21.28.81/v1` |
-| Modelo | `qwen3.6-27b` |
+| Modelo | `qwen3.8-27b` (cambiado el 02/10/2026 desde `qwen3.6-27b`, que el servidor ya no publica; aprobado por JJO) |
 | API | OpenAI-compatible (`/v1/chat/completions`, `/v1/models`) |
 | Soporta | `temperature=0`, `seed`, `response_format` (json_schema), según JJO |
 | API key | Variable de entorno `PRIVACYGUARD_LLM_API_KEY` (no está en el repositorio; pedírsela a JJO cuando haga falta, nunca escribirla en ficheros versionados) |
@@ -109,18 +109,24 @@ estos casos como pendientes de decisión, no como éxito.
       `reference/aicrew/` (copia de `anon_layer1.py` con hashes),
       `tests/conformance/test_aicrew_layer1_reference.py` (34 tests, verdes).
 - [x] `git init` en local (sin commits todavía).
-- [ ] Primer commit con la estructura inicial (cuando JJO lo pida).
-- [ ] **Verificar el LLM interno** con un script de prueba en
+- [x] Primer commit con la estructura inicial (`adf934b`, 25/09/2026).
+- [x] **Verificar el LLM interno** (02/10/2026, con la excepción TLS temporal; ver `docs/llm_interno_verificacion.md`) con un script de prueba en
       `scripts/check_llm.py` (stdlib; solo texto sintético, nunca un CV real):
-      conectividad TLS y CA necesaria, `/v1/models` lista `qwen3.6-27b`,
+      conectividad TLS y CA necesaria, `/v1/models` lista `qwen3.8-27b`,
       aceptación de `seed`, `temperature=0` y `response_format` json_schema,
       desactivación del *thinking*, latencia de una llamada tipo con ~6.000
       caracteres, y repetibilidad (10 llamadas idénticas → ¿misma salida?).
       Documentar en `docs/llm_interno_verificacion.md`.
+      **Bloqueado (30/09/2026):** script listo; falla la validación TLS por
+      falta de la CA interna. Emisor del certificado: `CN=AISM Internal CA,
+      O=ATEXIS, OU=AI Platform`. Pedir a Sistemas su certificado en PEM.
+      **Desbloqueo temporal (02/10/2026, decisión de JJO):** ver
+      "Excepción temporal TLS" al final de este fichero.
 - [ ] Preguntar al responsable del servidor LLM (vía JJO) si registra el
       contenido de los prompts y con qué retención. Es un tratamiento de datos
-      personales que debe constar en RC-5 y en la DPIA.
-- [ ] Redactar `docs/ATX_PrivacyGuard_Requisitos_v1.1.md` con los cambios de
+      personales que debe constar en RC-5 y en la DPIA. Registrado como D-16 /
+      RC-12 en la v1.1; pendiente de que JJO traslade la pregunta.
+- [x] Redactar `docs/ATX_PrivacyGuard_Requisitos_v1.1.md` con los cambios de
       la tabla "Consecuencias del cambio NER → LLM", D-1/D-2 aprobadas,
       D-3/D-4/D-14 como supuestos, y la propuesta D-15 (normas ISO). Marcar
       los cambios para revisión del DPO. La v1.0 no se edita.
@@ -248,3 +254,36 @@ completos; criterio 0 superado (con las excepciones de D-15); suite verde.
 | RL-4 | No determinismo del LLM pese a temperature=0 y seed. | Medir la repetibilidad en P0/P3; la caché versionada de AICrew (RV-2) fija el resultado por CV. |
 | RL-5 | Cambio silencioso del modelo en el servidor LLM (misma etiqueta, pesos distintos). | Declarar `llm_model` en cada respuesta; comprobar `/v1/models` al arrancar y en `health`; acordar con el administrador el aviso de cambios. |
 | RL-6 | Inyección de instrucciones dentro del CV ("ignora las instrucciones y..."). | El LLM solo produce una lista validada por esquema; nunca texto de salida; casos de red-team específicos. |
+
+---
+
+## Excepción temporal TLS (02/10/2026) — REVERTIR ANTES DE PRUEBAS REALES
+
+**Decisión de JJO:** mientras Sistemas no entregue el certificado PEM de
+`AISM Internal CA`, se permite desactivar la verificación TLS hacia el LLM
+interno para no bloquear el desarrollo. Contradice la restricción 5 de
+`CLAUDE.md`, RS-10 (v1.1) y la nota de P0; es **temporal** y consta aquí para
+que no se olvide.
+
+Implementación (opt-in, el valor por defecto sigue siendo verificar):
+- `config`: `llm_tls_verify = false` (por defecto `true`; ver
+  `config/privacyguard.example.toml`). Campo `Settings.llm_tls_verify`.
+- `scripts/check_llm.py --insecure-skip-tls-verify` (avisa por stderr).
+- El cliente LLM de P3 debe respetar `llm_tls_verify` y emitir un aviso en el
+  log de arranque (solo metadato, sin datos) cuando sea `false`.
+
+Condiciones mientras dure la excepción:
+- El LLM recibe **solo texto sintético** (también exigido por D-16).
+- Ningún CV real, ni siquiera en pruebas locales.
+
+**Checklist de cierre (obligatorio antes de la fase de testeo real / P6 y
+antes de cualquier CV real):**
+- [ ] Obtener de Sistemas el PEM de `AISM Internal CA` y fijar `llm_ca_file`.
+- [ ] Poner `llm_tls_verify = true` (o eliminar la clave) en toda config real.
+- [ ] Ejecutar `scripts/check_llm.py` **sin** `--insecure-skip-tls-verify` y
+      confirmar que valida el certificado (IP 172.21.28.81 en el SAN).
+- [ ] Eliminar la opción `llm_tls_verify` y el flag del script (o dejar un
+      error si se pone a `false` fuera de `127.0.0.1`), y retirar esta sección.
+- [ ] Actualizar `docs/llm_interno_verificacion.md` y el supuesto LLM-3 de
+      `docs/P0_supuestos_pendientes_revision.md`.
+- [ ] Informar al DPO: RS-10 estuvo incumplido temporalmente en desarrollo.

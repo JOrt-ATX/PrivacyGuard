@@ -39,7 +39,7 @@ Documentos de referencia:
    texto**: solo devuelve una lista de entidades (texto literal + etiqueta);
    los offsets y la sustitución los calcula el Servicio de forma determinista.
 5. **Única conexión saliente permitida:** el endpoint LLM interno configurado
-   (OpenAI-compatible, `https://172.21.28.81/v1`, modelo `qwen3.6-27b`).
+   (OpenAI-compatible, `https://172.21.28.81/v1`, modelo `qwen3.8-27b`).
    Nada de internet, telemetría ni descargas. Verificación TLS **siempre
    activa** (con CA interna configurable si hace falta, nunca
    `CERT_NONE`). API key en variable de entorno o fichero de config fuera del

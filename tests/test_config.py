@@ -29,6 +29,22 @@ class ConfigTests(unittest.TestCase):
             settings = load_settings(path, environ={"PRIVACYGUARD_LLM_API_KEY": "outside-repo"})
         self.assertEqual(settings.llm_api_key, "outside-repo")
         self.assertEqual(len(settings.llm_endpoint_id), 16)
+        self.assertTrue(settings.llm_tls_verify)
+
+    def test_tls_verify_can_be_disabled_only_explicitly(self):
+        base = (
+            'host = "127.0.0.1"\nport = 8090\n'
+            'llm_base_url = "https://llm.internal/v1"\nllm_model = "m"\n'
+            'llm_timeout_s = 1\nllm_seed = 1\nmax_concurrency = 1\n'
+            'max_text_bytes = 1\ndiagnostic_mode = false\n'
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "config.toml"
+            path.write_text(base + "llm_tls_verify = false\n", encoding="utf-8")
+            self.assertFalse(load_settings(path).llm_tls_verify)
+            path.write_text(base + 'llm_tls_verify = "no"\n', encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "llm_tls_verify"):
+                load_settings(path)
 
     def test_non_loopback_requires_tls(self):
         with tempfile.TemporaryDirectory() as directory:

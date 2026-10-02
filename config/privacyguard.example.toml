@@ -3,8 +3,12 @@ port = 8090
 tls_cert = ""
 tls_key = ""
 llm_base_url = "https://172.21.28.81/v1"
-llm_model = "qwen3.6-27b"
+llm_model = "qwen3.8-27b"
 llm_ca_file = ""
+# EXCEPCIÓN TEMPORAL: false desactiva la verificación TLS hacia el LLM (solo
+# texto sintético). Debe ser true en cuanto se disponga de la CA (llm_ca_file).
+# Ver PLAN.md, "Excepción temporal TLS".
+llm_tls_verify = true
 llm_timeout_s = 30.0
 llm_seed = 20260925
 max_concurrency = 4

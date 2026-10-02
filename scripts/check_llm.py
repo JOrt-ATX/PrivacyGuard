@@ -21,7 +21,7 @@ from typing import Any
 
 
 DEFAULT_BASE_URL = "https://172.21.28.81/v1"
-DEFAULT_MODEL = "qwen3.6-27b"
+DEFAULT_MODEL = "qwen3.8-27b"
 API_KEY_ENV = "PRIVACYGUARD_LLM_API_KEY"
 SYNTHETIC_TEXT = (
     "Perfil profesional sintético. Experiencia en gestión de proyectos, "
@@ -58,6 +58,11 @@ def _parser() -> argparse.ArgumentParser:
     parser.add_argument("--base-url", default=os.environ.get("PRIVACYGUARD_LLM_BASE_URL", DEFAULT_BASE_URL))
     parser.add_argument("--model", default=os.environ.get("PRIVACYGUARD_LLM_MODEL", DEFAULT_MODEL))
     parser.add_argument("--ca-file", default=os.environ.get("PRIVACYGUARD_LLM_CA_FILE"))
+    parser.add_argument(
+        "--insecure-skip-tls-verify",
+        action="store_true",
+        help="EXCEPCIÓN TEMPORAL (PLAN.md): no verifica el certificado del LLM. Solo texto sintético.",
+    )
     parser.add_argument("--timeout", type=float, default=30.0)
     parser.add_argument("--seed", type=int, default=20260925)
     parser.add_argument("--iterations", type=int, default=10)
@@ -77,7 +82,16 @@ def _validate_base_url(base_url: str) -> str:
     return parsed.geturl().rstrip("/") + "/v1"
 
 
-def _context(ca_file: str | None) -> ssl.SSLContext:
+def _context(ca_file: str | None, skip_verify: bool = False) -> ssl.SSLContext:
+    if skip_verify:
+        print(
+            "WARNING: verificación TLS DESACTIVADA (excepción temporal, ver PLAN.md)",
+            file=sys.stderr,
+        )
+        context = ssl.create_default_context()
+        context.check_hostname = False
+        context.verify_mode = ssl.CERT_NONE
+        return context
     try:
         return ssl.create_default_context(cafile=ca_file)
     except (OSError, ssl.SSLError) as exc:
@@ -171,7 +185,7 @@ def run(args: argparse.Namespace) -> int:
     base_url = _validate_base_url(args.base_url)
     if args.iterations < 1 or args.iterations > 20:
         raise VerificationError("iterations_invalid")
-    context = _context(args.ca_file)
+    context = _context(args.ca_file, args.insecure_skip_tls_verify)
     models = _request(base_url, "/models", api_key, args.timeout, context)
     model_ids = {
         item.get("id")
@@ -197,7 +211,8 @@ def run(args: argparse.Namespace) -> int:
         )
         durations.append(time.perf_counter() - started)
         _check_completion_shape(response)
-        responses.append(json.dumps(response, ensure_ascii=False, sort_keys=True, separators=(",", ":")))
+        # Se compara solo el contenido: id y created cambian en cada llamada.
+        responses.append(response["choices"][0]["message"]["content"])
 
     print("models_endpoint=ok")
     print("configured_model_listed=yes")
