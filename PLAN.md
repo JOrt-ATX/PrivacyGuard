@@ -19,8 +19,11 @@ este Servicio (ver `C:\AI\AICrew\docs\P2_supuestos_pendientes_revision.md`).
 Hecho el 02/10/2026: campos alineados con la v1.1 (`privacy_llm_model`,
 `privacy_prompt_version`, `privacy_llm_endpoint_id`, más
 `privacy_preprocessing_version` en `evaluations`; 526 tests verdes en AICrew).
-Pendiente: CA-9 (control de deriva por proceso), estados por CV en la UI (§7.4),
-validación manual (§12) y commit en AICrew (sigue sin commitear).
+CA-9 hecho (control de deriva por proceso, endpoint de aceptación por
+administrador; 540 tests verdes; commit local en AICrew, sin subir al remoto).
+Pendiente: estados por CV en la UI (§7.4), pantalla de la excepción CA-9,
+reevaluación completa del proceso con la versión nueva, CA-15 y validación
+manual (§12).
 
 ---
 
